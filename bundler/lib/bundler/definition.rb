@@ -716,6 +716,10 @@ module Bundler
           if s.source.include?(effective_source)
             deps << dep
           else
+            if effective_source.dup.specs.search_all(s.name).empty?
+              raise GemNotFound, "Could not find gem '#{s.name}' in #{effective_source}"
+            end
+
             s.source = effective_source
           end
         end
